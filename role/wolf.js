@@ -1,11 +1,11 @@
-const Player = require('./player')
-class Wolf extends Player {
-    legit = false;
-    kill() {
+const Player = require('./player');
 
-    }
-    sendPrivateTextt() {
-        return;
+class Wolf extends Player {
+    constructor(name, id) {
+        super(name, id);
+        this.setRole('wolf');
+        this.setLegit(false);
     }
 }
+
 module.exports = Wolf;

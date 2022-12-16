@@ -1,5 +1,5 @@
-const player1 = require('./player')
-class Villagers extends player1 {
+const Player = require('./player');
+
+class Villagers extends Player {
 
 }
-module.exports = Villagers;

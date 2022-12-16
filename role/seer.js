@@ -1,10 +1,10 @@
-const player1 = require('./player')
-class Seer extends player1 {
-    getRole(someone) {
-        if (someone.legit == false)
-            console.log("wolf");
-        else
-            console.log("villager");
+const player = require('./player')
+class Seer extends player {
+    constructor(name, id) {
+        super(name, id);
+        this.setLegit(true);
+        this.setRole('seer');
     }
 }
-module.exports = Villagers;
+
+module.exports = Seer;
