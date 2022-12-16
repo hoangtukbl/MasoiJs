@@ -6,6 +6,10 @@ class Wolf extends Player {
         this.setRole('wolf');
         this.setLegit(false);
     }
+
+    kill(){
+
+    }
 }
 
 module.exports = Wolf;

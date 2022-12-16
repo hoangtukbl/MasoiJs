@@ -1,11 +1,11 @@
 const Player = require('./player');
 
-class Villagers extends Player {
+class Bodyguard extends Player{
     constructor(name, id) {
         super(name, id);
+        this.setRole('bodyguard');
         this.setLegit(true);
-        this.setRole('villager');
     }
 }
 
-module.exports = Villagers;
+module.exports = Bodyguard;
