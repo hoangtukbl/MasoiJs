@@ -15,7 +15,6 @@ class Player {
     getName() {
         return this.#name;
     }
-
     setName(name) {
         this.#name = name;
     }
@@ -23,21 +22,20 @@ class Player {
     getId() {
         return this.#id
     }
-
     setID(id){
         this.#id = id;
     }
 
-    vote(id) {
-        if (this.#state === true) {
-            return id;
-        }
+    setState(state){
+        this.#state = state;
+    }
+    getState(){
+        return this.#state;
     }
 
-    setState(){
-        this.#state = !this.state;
+    getRole(){
+        return this.#role;
     }
-
     setRole(role){
         this.#role = role;
     }
@@ -45,17 +43,15 @@ class Player {
     setLegit(legit){
         this.#legit = legit;
     }
-
     getLegit(){
         return this.#legit;
     }
 
-    getRole(){
-        return this.#role;
-    }
-
-    getState(){
-        return this.#state;
+    // General method
+    vote(id) {
+        if (this.#state === true) {
+            return id;
+        }
     }
 }
 
