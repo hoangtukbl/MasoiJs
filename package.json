@@ -1,0 +1,24 @@
+{
+  "name": "masoijs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoangtukbl/MasoiJs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoangtukbl/MasoiJs/issues"
+  },
+  "homepage": "https://github.com/hoangtukbl/MasoiJs#readme",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "moment": "^2.29.4"
+  }
+}

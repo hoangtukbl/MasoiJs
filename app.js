@@ -10,12 +10,4 @@ const listPlayer = [
 ];
 
 const game = new Game(listPlayer);
-
-const t = game.getListPlayer();
-console.log(t);
-t[2].kill(2);
-console.log(t[2].getTargetKill());
-console.log(game.getPlayerLife());
-
-game.handleKill(t[2].getTargetKill());
-console.log(game.getPlayerLife());
+const t = game.getPlayerLife();

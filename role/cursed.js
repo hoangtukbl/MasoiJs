@@ -5,6 +5,11 @@ class Cursed extends player {
         this.setLegit(true);
         this.setRole('cursed');
     }
+
+    convert(){
+        this.setRole('wolf');
+        this.setLegit(false);
+    }
 }
 
 module.exports = Cursed;

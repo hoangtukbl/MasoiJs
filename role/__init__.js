@@ -9,6 +9,8 @@ class Init {
     #listRole = ["bodyguard", "witch", "wolf", "wolf", "village", "village",
         "cursed", "hunter", "mayor", "wolf", "diviner", "village"];
     #listPlayer = [];
+    #queueKill = [];
+    #queueRev = [];
 
     constructor(listPlayer) {
         this.setListPlayer(listPlayer);
@@ -20,16 +22,48 @@ class Init {
     }
 
     getListPlayer() {
-        this.#listPlayer.forEach(each => {
-            console.log(each.getName(),
-                each.getId(),
-                each.getLegit(),
-                each.getRole(),
-                each.getState())
-        })
+        // this.#listPlayer.forEach(each => {
+        //     console.log(each.getName(),
+        //         each.getId(),
+        //         each.getLegit(),
+        //         each.getRole(),
+        //         each.getState())
+        // })
         return this.#listPlayer;
     }
 
+    getPlayerLife() {
+        const data = this.#listPlayer.filter(each => each.getState())
+        return data;
+    }
+
+    addToQueueKill(idPlayer){
+        this.#queueKill.push(idPlayer);
+    }
+
+    addToQueueRev(idPlayer){
+        this.#queueRev.push(idPlayer);
+    }
+
+    handleKill() {
+        this.#queueKill.forEach(j => {
+            this.#listPlayer.forEach(k => {
+                if(j.getId() === k.getId()){
+                    k.setState(false);
+                }
+            })
+        })
+    }
+
+    handleRev() {
+        this.#queueRev.forEach(j => {
+            this.#listPlayer.forEach(k => {
+                if(j.getId() === k.getId()){
+                    k.setState(true);
+                }
+            })
+        })
+    }
     setRole() {
         this.#listAttend.sort(() => Math.random() - 0.5);
         this.#listAttend.forEach((each, key) => {
@@ -53,18 +87,39 @@ class Init {
         })
     }
 
-    getPlayerLife() {
-        const data = this.#listPlayer.filter(each => each.getState())
-        return data;
-    }
-
-    handleKill(idPlayer){
+    countGood(){
+        let quan = 0;
         this.#listPlayer.forEach(each => {
-            const t = each.getId();
-            if(t == idPlayer){
-                each.setState(false);
+            if(each.getLegit()){
+                quan++;
             }
         })
+        return quan;
+    }
+
+    countEvil(){
+        let quan = 0;
+        this.#listPlayer.forEach(each => {
+            if(!each.getLegit()){
+                quan++;
+            }
+        })
+        return quan;
+    }
+
+    checkFinish(){
+        return this.countEvil() >= this.countGood();
+    }
+
+    start(){
+        while (this.checkFinish()){
+            const players = this.#listPlayer;
+            console.log("Bạn muốn chọn ai để bảo vệ đêm nay: ")
+            let a = 1;
+            if(players[0].getState()){
+                players[0].protect(a);
+            }
+        }
     }
 }
 
