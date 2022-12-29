@@ -1,10 +1,29 @@
-const {PermissionFlagsBits} = require('discord.js');
+const {PermissionFlagsBits, Events} = require('discord.js');
 const moment = require('moment');
 const {GuildScheduledEventEntityType} = require("discord-api-types/v8");
-
+const Game = require("../../game/role/__init__");
 
 const command = {
     normalCom: (client) => {
+        client.on(Events.MessageReactionAdd, async (reaction, user) => {
+            // When a reaction is received, check if the structure is partial
+            if (reaction.partial) {
+                // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+                try {
+                    await reaction.fetch();
+                } catch (error) {
+                    console.error('Something went wrong when fetching the message:', error);
+                    // Return as `reaction.message.author` may be undefined/null
+                    return;
+                }
+            }
+
+            // Now the message has been cached and is fully available
+            // console.dir(reaction);
+            console.log(`${reaction}'s message "${reaction.message.content}" gained a reaction!`);
+            // The reaction is now also fully available and the properties will be reflected accurately:
+            console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
+        });
         client.on('messageCreate', async (msg) => {
             const commandName = msg.content;
             if (commandName.toLowerCase() === '$hello') {
@@ -22,6 +41,25 @@ const command = {
                     files: [imageURL],
                 });
 
+            } else if (commandName === "$startGame") {
+                const a = new Game([
+                    {name: 'Tri', role: '', id: '1'},
+                    {name: 'Tu', role: '', id: '2'},
+                    {name: 'Thong', role: '', id: '3'},
+                    {name: 'Dung', role: '', id: '4'},
+                    {name: 'Huy', role: '', id: '5'},
+                    {name: 'Mai', role: '', id: '6'}
+                ]);
+                let ans = "";
+                [
+                    {name: 'Tri', role: '', id: '1'},
+                    {name: 'Tu', role: '', id: '2'},
+                    {name: 'Thong', role: '', id: '3'},
+                    {name: 'Dung', role: '', id: '4'},
+                    {name: 'Huy', role: '', id: '5'},
+                    {name: 'Mai', role: '', id: '6'}
+                ].map(each => ans += each.name)
+                await msg.reply(ans);
             } else if (commandName === '$dis') {
                 await msg.member.voice.disconnect();
             } else if (commandName.split(' ')[0] === '$lich') {
@@ -68,6 +106,30 @@ const command = {
                 const im = "https://images4.fanpop.com/image/photos/22700000/Rick-Rolling-Win-rickrolld-22704848-250-217.gif";
                 const a = "https://stream.nixcdn.com/Sony_Audio59/NeverGonnaGiveYouUp-RickAstley-5890955.mp3?st=OLR48deuiWZTedRu3PUT8w&e=1662707548&t=1662621108041";
                 await msg.channel.send({content: "I'm coming back...", files: [im, a]});
+            } else if (commandName === "$test") {
+                const message = await msg.reply({ content: 'Awaiting emojis...', fetchReply: true });
+                message.react('👍').then(() => message.react('👎'));
+
+                const filter = (reaction, user) => {
+                    return ['👍', '👎'].includes(reaction.emoji.name);
+                };
+
+                message.awaitReactions({  max: 20, time: 20000, errors: ['time'] })
+                    .then(collected => {
+                        const reaction = collected.first();
+                        console.dir(reaction);
+                        if (reaction.emoji.name === '👍') {
+                            msg.channel.send('You reacted with a thumbs up.');
+                        } else {
+                            msg.channel.send('You reacted with a thumbs down.');
+                        }
+                    })
+                    .catch(collected => {
+                        // console.dir(collected);
+                        console.log(collected)
+                        console.log(`Game có ${collected.size} người chơi`);
+                        msg.channel.send('You didn\'t react with neither a thumbs up, nor a thumbs down.');
+                    });
             }
         });
     }

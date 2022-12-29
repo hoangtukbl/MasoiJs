@@ -1,5 +1,6 @@
 const Player = require('./role/player')
 const Wolf = require('./role/wolf')
+
 class werewolfgame {
     start() {
         const player_name = ["tu", "tri", "thong", "dung", "mai", "huy"];
