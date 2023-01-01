@@ -1,12 +1,14 @@
 class Player {
     #state;
     #name;
+    #user;
     #id;
     #legit;
     #role;
-    constructor(name, id, legit, role) {
+    constructor(name, user, id, legit, role) {
         this.#state = true;
         this.#name = name;
+        this.#user = user;
         this.#id = id;
         this.#legit = legit;
         this.#role = role;
@@ -17,6 +19,13 @@ class Player {
     }
     setName(name) {
         this.#name = name;
+    }
+
+    getUser(){
+        return this.#user;
+    }
+    setUser(user){
+        this.#user = user;
     }
 
     getId() {
