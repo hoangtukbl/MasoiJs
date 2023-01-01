@@ -1,7 +1,7 @@
-const player = require('./player')
-class Seer extends player {
-    constructor(name, id) {
-        super(name, id);
+const Player = require('./player')
+class Seer extends Player {
+    constructor(user, id) {
+        super(user, id);
         this.setLegit(true);
         this.setRole('seer');
     }

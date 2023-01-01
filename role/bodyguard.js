@@ -3,8 +3,8 @@ const Player = require('./player');
 class Bodyguard extends Player {
     #idProtected;
 
-    constructor(name, id) {
-        super(name, id);
+    constructor(user, id) {
+        super(user, id);
         this.setRole('bodyguard');
         this.setLegit(true);
     }
@@ -12,8 +12,7 @@ class Bodyguard extends Player {
     protect(idProtected) {
         if (idProtected == this.#idProtected) {
             return false;
-        }
-        else{
+        } else {
             this.setProtected(idProtected);
             return true;
         }

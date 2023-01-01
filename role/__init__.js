@@ -7,7 +7,9 @@ const Wolf = require('./wolf');
 class Init {
     #listAttend = [];
     #listRole = ["bodyguard", "witch", "wolf", "wolf", "village", "village",
-        "cursed", "hunter", "mayor", "wolf", "diviner", "village"];
+        "cursed", "hunter", "mayor", "wolf", "village", "alphaWolf", "seer", "fakeSeer", "village",
+
+    ];
     #listPlayer = [];
     #queueKill = [];
     #queueRev = [];
@@ -37,18 +39,18 @@ class Init {
         return data;
     }
 
-    addToQueueKill(idPlayer){
+    addToQueueKill(idPlayer) {
         this.#queueKill.push(idPlayer);
     }
 
-    addToQueueRev(idPlayer){
+    addToQueueRev(idPlayer) {
         this.#queueRev.push(idPlayer);
     }
 
     handleKill() {
         this.#queueKill.forEach(j => {
             this.#listPlayer.forEach(k => {
-                if(j.getId() === k.getId()){
+                if (j.getId() === k.getId()) {
                     k.setState(false);
                 }
             })
@@ -58,7 +60,7 @@ class Init {
     handleRev() {
         this.#queueRev.forEach(j => {
             this.#listPlayer.forEach(k => {
-                if(j.getId() === k.getId()){
+                if (j.getId() === k.getId()) {
                     k.setState(true);
                 }
             })
@@ -69,54 +71,54 @@ class Init {
         this.#listAttend.forEach((each, key) => {
             switch (this.#listRole[key]) {
                 case 'village':
-                    this.#listPlayer.push(new Villager(each.name, each.id));
+                    this.#listPlayer.push(new Villager(each.user, each.id));
                     break;
                 case "bodyguard":
-                    this.#listPlayer.push(new Bodyguard(each.name, each.id));
+                    this.#listPlayer.push(new Bodyguard(each.user, each.id));
                     break;
                 case 'wolf':
-                    this.#listPlayer.push(new Wolf(each.name, each.id));
+                    this.#listPlayer.push(new Wolf(each.user, each.id));
                     break;
                 case 'seer':
-                    this.#listPlayer.push(new Seer(each.name, each.id));
+                    this.#listPlayer.push(new Seer(each.user, each.id));
                     break;
                 case 'witch':
-                    this.#listPlayer.push(new Witch(each.name, each.id));
+                    this.#listPlayer.push(new Witch(each.user, each.id));
                     break;
             }
         })
     }
 
-    countGood(){
+    countGood() {
         let quan = 0;
         this.#listPlayer.forEach(each => {
-            if(each.getLegit()){
+            if (each.getLegit()) {
                 quan++;
             }
         })
         return quan;
     }
 
-    countEvil(){
+    countEvil() {
         let quan = 0;
         this.#listPlayer.forEach(each => {
-            if(!each.getLegit()){
+            if (!each.getLegit()) {
                 quan++;
             }
         })
         return quan;
     }
 
-    checkFinish(){
+    checkFinish() {
         return this.countEvil() >= this.countGood();
     }
 
-    start(){
-        while (this.checkFinish()){
+    start() {
+        while (this.checkFinish()) {
             const players = this.#listPlayer;
             console.log("Bạn muốn chọn ai để bảo vệ đêm nay: ")
             let a = 1;
-            if(players[0].getState()){
+            if (players[0].getState()) {
                 players[0].protect(a);
             }
         }

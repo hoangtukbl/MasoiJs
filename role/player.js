@@ -1,49 +1,49 @@
 class Player {
     #state;
-    #name;
+    #user;
     #id;
     #legit;
     #role;
-    constructor(name, id, legit, role) {
+    constructor(user, id, legit, role) {
         this.#state = true;
-        this.#name = name;
+        this.#user = user;
         this.#id = id;
         this.#legit = legit;
         this.#role = role;
     }
 
     getName() {
-        return this.#name;
+        return this.#user;
     }
-    setName(name) {
-        this.#name = name;
+    setName(user) {
+        this.#user = user;
     }
 
     getId() {
         return this.#id
     }
-    setID(id){
+    setID(id) {
         this.#id = id;
     }
 
-    setState(state){
+    setState(state) {
         this.#state = state;
     }
-    getState(){
+    getState() {
         return this.#state;
     }
 
-    getRole(){
+    getRole() {
         return this.#role;
     }
-    setRole(role){
+    setRole(role) {
         this.#role = role;
     }
 
-    setLegit(legit){
+    setLegit(legit) {
         this.#legit = legit;
     }
-    getLegit(){
+    getLegit() {
         return this.#legit;
     }
 

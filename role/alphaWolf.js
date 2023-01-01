@@ -1,10 +1,10 @@
 const Player = require('./player');
 
-class Wolf extends Player {
+class AlphaWolf extends Player {
     #targetKill;
     constructor(user, id) {
         super(user, id);
-        this.setRole('wolf');
+        this.setRole('alphaWolf');
         this.setLegit(false);
     }
 
@@ -16,5 +16,6 @@ class Wolf extends Player {
         return this.#targetKill;
     }
 }
-
-module.exports = Wolf;
+//có quyền đổi mục tiêu của cả đàn sói vào đêm hôm đó
+//tiên tri soi ra dân ngu
+module.exports = AlphaWolf;

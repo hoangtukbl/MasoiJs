@@ -1,8 +1,8 @@
 const Player = require('./player');
 
 class Villagers extends Player {
-    constructor(name, id) {
-        super(name, id);
+    constructor(user, id) {
+        super(user, id);
         this.setLegit(true);
         this.setRole('villager');
     }
