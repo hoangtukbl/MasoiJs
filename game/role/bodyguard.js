@@ -22,10 +22,6 @@ class Bodyguard extends Player {
     setProtected(idProtected) {
         this.#idProtected = idProtected;
     }
-
-    play = () => {
-
-    }
 }
 
 module.exports = Bodyguard;

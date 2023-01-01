@@ -1,8 +1,8 @@
-const Bodyguard = require('./role/bodyguard');
-const Seer = require('./role/seer');
-const Villager = require('./role/villagers');
-const Witch = require('./role/witch');
-const Wolf = require('./role/wolf');
+const Bodyguard = require('./bodyguard');
+const Seer = require('./seer');
+const Villager = require('./villagers');
+const Witch = require('./witch');
+const Wolf = require('./wolf');
 
 class Init {
     #listAttend = [];
@@ -108,21 +108,15 @@ class Init {
     }
 
     checkFinish(){
-        // return this.countEvil() >= this.countGood();
-        return true;
+        return this.countEvil() >= this.countGood();
     }
 
-    countTime = (ms = 0) => {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    start = async () => {
+    start(){
         while (this.checkFinish()){
             const players = this.#listPlayer;
+            console.log("Bạn muốn chọn ai để bảo vệ đêm nay: ")
             let a = 1;
             if(players[0].getState()){
-                console.log("Bạn muốn chọn ai để bảo vệ đêm nay: ")
-                await this.countTime(10000);
                 players[0].protect(a);
             }
         }
