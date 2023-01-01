@@ -1,13 +1,9 @@
-const Game = require('./role/__init__');
+const fs = require('fs');
 
-const listPlayer = [
-    {name: 'Tri', role: '', id: '1'},
-    {name: 'Tu', role: '', id: '2'},
-    {name: 'Thong', role: '', id: '3'},
-    {name: 'Dung', role: '', id: '4'},
-    {name: 'Huy', role: '', id: '5'},
-    {name: 'Mai', role: '', id: '6'}
-];
+const commandFiles = fs.readdirSync('./roles').filter(file => file.endsWith('.js'));
 
-const game = new Game(listPlayer);
-const t = game.getPlayerLife();
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name,command);
+}
+console.log(commandFiles);

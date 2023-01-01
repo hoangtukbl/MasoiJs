@@ -1,8 +1,8 @@
-const Bodyguard = require('./bodyguard');
-const Seer = require('./seer');
-const Villager = require('./villagers');
-const Witch = require('./witch');
-const Wolf = require('./wolf');
+const Bodyguard = require('./role/bodyguard');
+const Seer = require('./role/seer');
+const Villager = require('./role/villagers');
+const Witch = require('./role/witch');
+const Wolf = require('./role/wolf');
 
 class Init {
     #listAttend = [];
@@ -11,14 +11,20 @@ class Init {
     #listPlayer = [];
     #queueKill = [];
     #queueRev = [];
+    bot;
 
-    constructor(listPlayer) {
+    constructor(listPlayer, bot) {
         this.setListPlayer(listPlayer);
         this.setRole();
+        this.bot = bot;
     }
 
     setListPlayer(listAttend) {
         this.#listAttend = listAttend;
+    }
+
+    command = async () => {
+        await this.bot.reply("Hello, tui guiwr tu ma soi");
     }
 
     getListPlayer() {
@@ -64,27 +70,29 @@ class Init {
             })
         })
     }
-    setRole() {
+    setRole = async () => {
         this.#listAttend.sort(() => Math.random() - 0.5);
-        this.#listAttend.forEach((each, key) => {
-            switch (this.#listRole[key]) {
+        console.log(this.#listAttend);
+        for (const each of this.#listRole) {
+            switch (each) {
                 case 'village':
-                    this.#listPlayer.push(new Villager(each.name, each.id));
+                    this.#listPlayer.push(await new Villager(each.name, each.id));
                     break;
                 case "bodyguard":
-                    this.#listPlayer.push(new Bodyguard(each.name, each.id));
+                    console.log(each.user);
+                    this.#listPlayer.push(await new Bodyguard(each.name, each.id));
                     break;
                 case 'wolf':
-                    this.#listPlayer.push(new Wolf(each.name, each.id));
+                    this.#listPlayer.push(await new Wolf(each.name, each.id));
                     break;
                 case 'seer':
-                    this.#listPlayer.push(new Seer(each.name, each.id));
+                    this.#listPlayer.push(await new Seer(each.name, each.id));
                     break;
                 case 'witch':
-                    this.#listPlayer.push(new Witch(each.name, each.id));
+                    this.#listPlayer.push(await new Witch(each.name, each.id));
                     break;
             }
-        })
+        }
     }
 
     countGood(){
@@ -120,6 +128,15 @@ class Init {
                 players[0].protect(a);
             }
         }
+    }
+
+    getListPlayerss = () => {
+        console.log(this.#listPlayer);
+        let a = '';
+        this.#listPlayer.forEach(each => {
+            a+=each.getName().username + ", role =" + each.getRole();
+        })
+        this.bot.channel.send(a);
     }
 }
 

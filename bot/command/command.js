@@ -1,7 +1,7 @@
 const {PermissionFlagsBits, Events} = require('discord.js');
 const moment = require('moment');
 const {GuildScheduledEventEntityType} = require("discord-api-types/v8");
-const Game = require("../../game/role/__init__");
+const Game = require("../../game/__init__");
 
 const command = {
     normalCom: (client) => {

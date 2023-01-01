@@ -2,8 +2,9 @@ const Game = require("../../game/__init__");
 
 const preSymbol = '$';
 
+let game;
+
 const wolfGameCmd = {
-    startGame: ()
     wolfCmd: (client) => {
         client.on('messageCreate', async (msg) => {
             const message = msg.content.toLowerCase();
@@ -23,7 +24,7 @@ const startGame = async (msg) => {
         content: 'Game đã sẵn sàng, hãy thả like vào tin nhắn này để join game',
         fetchReply: true
     });
-    await message.react('👍')
+    await message.react('👍');
     const filter = (reaction, user) => {
         return ['👍', '👎'].includes(reaction.emoji.name);
     };
@@ -35,19 +36,30 @@ const startGame = async (msg) => {
             await reaction.users.fetch().then(users => {
                 users.forEach(user => {
                     if (!user.bot) {
-                        players.push({user: user, id: user.id});
+                        players.push({name: user, id: user.id});
                     }
                 })
             })
             if (players.length) {
                 let listPlayer = '';
-                players.forEach(each => listPlayer += each.user.username + '\n');
+                players.forEach(each => listPlayer += each.name.username + '\n');
                 msg.reply(`Game có ${players.length} người chơi.\nList player: \n${listPlayer}`);
-                const game = new Game(players);
-                await game.start();
+                game = await new Game(players, msg);
+                game.getListPlayerss();
+                // await game.start();
+                // await start(game, msg);
             }
         })
         .catch(collected => {
+            console.log(collected);
             msg.channel.send(`Không đủ người chơi, bye!`);
         });
+}
+
+const start = async (game, bot) => {
+    // const msgBg = await bot.channel.send({content:"Chọn người để bảo vệ",fetchReply: true});
+    // await msgBg.react('1️⃣');
+    // await bot.channel.send(game.getListPlayerss());
+    const a = game.getListPlayerss();
+    console.log(a);
 }
