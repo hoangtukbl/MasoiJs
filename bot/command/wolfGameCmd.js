@@ -45,7 +45,8 @@ const startGame = async (msg) => {
                 players.forEach(each => listPlayer += each.name.username + '\n');
                 msg.reply(`Game có ${players.length} người chơi.\nList player: \n${listPlayer}`);
                 game = await new Game(players, msg);
-                game.getListPlayerss();
+                await game.setRole();
+                await game.getListPlayerss();
                 // await game.start();
                 // await start(game, msg);
             }

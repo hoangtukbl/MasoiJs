@@ -15,7 +15,6 @@ class Init {
 
     constructor(listPlayer, bot) {
         this.setListPlayer(listPlayer);
-        this.setRole();
         this.bot = bot;
     }
 
@@ -72,24 +71,24 @@ class Init {
     }
     setRole = async () => {
         this.#listAttend.sort(() => Math.random() - 0.5);
-        console.log(this.#listAttend);
-        for (const each of this.#listRole) {
+        for (let i = 0; i<this.#listAttend.length; i++) {
+            const each = this.#listRole[i];
+            const player = this.#listAttend[i];
             switch (each) {
+                case 'witch':
+                    this.#listPlayer.push(await new Witch(player.name, player.id));
+                    break;
                 case 'village':
-                    this.#listPlayer.push(await new Villager(each.name, each.id));
+                    this.#listPlayer.push(await new Villager(player.name, player.id));
                     break;
                 case "bodyguard":
-                    console.log(each.user);
-                    this.#listPlayer.push(await new Bodyguard(each.name, each.id));
+                    this.#listPlayer.push(await new Bodyguard(player.name, player.id));
                     break;
                 case 'wolf':
-                    this.#listPlayer.push(await new Wolf(each.name, each.id));
+                    this.#listPlayer.push(await new Wolf(player.name, player.id));
                     break;
                 case 'seer':
-                    this.#listPlayer.push(await new Seer(each.name, each.id));
-                    break;
-                case 'witch':
-                    this.#listPlayer.push(await new Witch(each.name, each.id));
+                    this.#listPlayer.push(await new Seer(player.name, player.id));
                     break;
             }
         }
@@ -130,11 +129,10 @@ class Init {
         }
     }
 
-    getListPlayerss = () => {
-        console.log(this.#listPlayer);
+    getListPlayerss = async () => {
         let a = '';
         this.#listPlayer.forEach(each => {
-            a+=each.getName().username + ", role =" + each.getRole();
+            a+=each.getName().username + ", role =" + each.getRole() + "\n";
         })
         this.bot.channel.send(a);
     }
