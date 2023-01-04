@@ -3,6 +3,7 @@ const Seer = require('./role/seer');
 const Villager = require('./role/villagers');
 const Witch = require('./role/witch');
 const Wolf = require('./role/wolf');
+const {ActionRowBuilder, Events, StringSelectMenuBuilder } = require("discord.js");
 
 class Init {
     #listAttend = [];
@@ -118,12 +119,33 @@ class Init {
         return this.countEvil() >= this.countGood();
     }
 
-    start(){
-        while (this.checkFinish()){
+    sleepTime(second = 0){
+        return new Promise(resolve => setTimeout(resolve, second));
+    }
+
+    async start() {
+        while (true) {
             const players = this.#listPlayer;
-            console.log("Bạn muốn chọn ai để bảo vệ đêm nay: ")
+            const option = [];
+            await this.#listPlayer.forEach(each =>{
+                if(each.getState()){
+                    option.push({label: each.getName().username, value: each.getId()})
+                }
+            })
+            const row = await new ActionRowBuilder()
+                .addComponents(new StringSelectMenuBuilder()
+                        .setCustomId('select')
+                        .setPlaceholder('Nothing selected')
+                        .addOptions(
+                            option
+                        ),
+                );
+            await this.bot.channel.send({ content: 'Bạn muốn chọn ai để bảo vệ đêm nay: ', components: [row] });
+            const x = await this.bot.options;
+            console.log(x);
+            await this.sleepTime(60000);
             let a = 1;
-            if(players[0].getState()){
+            if (players[0].getState()) {
                 players[0].protect(a);
             }
         }
