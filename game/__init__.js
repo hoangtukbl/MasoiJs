@@ -24,17 +24,10 @@ class Init {
     }
 
     command = async () => {
-        await this.bot.reply("Hello, tui guiwr tu ma soi");
+        await this.bot.reply("Hello, tui gửi từ ma sói");
     }
 
     getListPlayer() {
-        // this.#listPlayer.forEach(each => {
-        //     console.log(each.getName(),
-        //         each.getId(),
-        //         each.getLegit(),
-        //         each.getRole(),
-        //         each.getState())
-        // })
         return this.#listPlayer;
     }
 
