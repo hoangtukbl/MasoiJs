@@ -3,7 +3,7 @@ const Seer = require('./role/seer');
 const Villager = require('./role/villagers');
 const Witch = require('./role/witch');
 const Wolf = require('./role/wolf');
-const {ActionRowBuilder, Events, StringSelectMenuBuilder } = require("discord.js");
+const {ActionRowBuilder, Events, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 class Init {
     #listAttend = [];
@@ -13,10 +13,13 @@ class Init {
     #queueKill = [];
     #queueRev = [];
     bot;
+    #protect;
+    client;
 
-    constructor(listPlayer, bot) {
+    constructor(listPlayer, bot, client) {
         this.setListPlayer(listPlayer);
         this.bot = bot;
+        this.client = client
     }
 
     setListPlayer(listAttend) {
@@ -42,6 +45,15 @@ class Init {
 
     addToQueueRev(idPlayer){
         this.#queueRev.push(idPlayer);
+    }
+
+    setProtected(protect){
+        console.log("Convert");
+        this.#protect = protect;
+    }
+
+    getProtected(){
+        return this.#protect;
     }
 
     handleKill() {
@@ -98,6 +110,10 @@ class Init {
         return quan;
     }
 
+    getPlayerById(id){
+        return this.#listPlayer.filter(each => each.getId() === id);
+    }
+
     countEvil(){
         let quan = 0;
         this.#listPlayer.forEach(each => {
@@ -128,19 +144,32 @@ class Init {
             const row = await new ActionRowBuilder()
                 .addComponents(new StringSelectMenuBuilder()
                         .setCustomId('select')
-                        .setPlaceholder('Nothing selected')
+                        .setPlaceholder('Choose Someone...')
                         .addOptions(
                             option
                         ),
                 );
             await this.bot.channel.send({ content: 'Bạn muốn chọn ai để bảo vệ đêm nay: ', components: [row] });
-            const x = await this.bot.options;
-            console.log(x);
-            await this.sleepTime(60000);
-            let a = 1;
-            if (players[0].getState()) {
-                players[0].protect(a);
-            }
+            await this.sleepTime(10000);
+            const playerProtect = await this.getProtected();
+            players[0].protect(playerProtect);
+
+            await this.bot.channel.send({content: 'Choose who will die'});
+            const wolfList = this.#listPlayer.filter(each => each.getRole() === 'wolf');
+            wolfList.forEach(each => {
+                this.client.users.fetch(each.getId(), false).then(async (user) => await user.send("Hello"));
+            })
+            await this.sleepTime(10000);
+
+            const buttonWitch = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('primary')
+                        .setLabel('Kill')
+                        .setStyle(ButtonStyle.Primary)
+                );
+            await this.bot.channel.send({content: `${this.getPlayerById(playerProtect)[0].getName().username} will die, choose 'Rev' or 'Kill Someone'`, components: [buttonWitch]});
+            await this.sleepTime(10000);
         }
     }
 
@@ -151,6 +180,7 @@ class Init {
         })
         this.bot.channel.send(a);
     }
+
 }
 
 module.exports = Init;
