@@ -1,8 +1,8 @@
 import Player from "./player";
 
 class Seer extends Player {
-    constructor(name: any, id: any) {
-        super(name, id, 'seer', true);
+    constructor(user: object[], id: string) {
+        super(user, id, 'seer', true);
     }
 }
 

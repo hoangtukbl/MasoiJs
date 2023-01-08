@@ -1,10 +1,11 @@
 import Player from "./player";
 
 class Witch extends Player {
-    private resurrection: any = 1;
-    private poison: any = 1;
-    constructor(name: object[], id: string) {
-        super(name, id, 'witch', true);
+    private resurrection: 1 | 0 = 1;
+    private poison: 1 | 0 = 1;
+
+    constructor(user: object[], id: string) {
+        super(user, id, 'witch', true);
     }
 
     resurrect(idDead: any) {

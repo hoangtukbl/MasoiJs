@@ -1,8 +1,8 @@
 import Player from "./player";
 
 class Villagers extends Player {
-    constructor(name: any, id: any) {
-        super(name, id, 'villager', true);
+    constructor(user: object[], id: string) {
+        super(user, id, 'villager', true);
     }
 }
 

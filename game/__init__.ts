@@ -6,7 +6,7 @@ const Wolf = require('./role/wolf');
 const {ActionRowBuilder, Events, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 export class Init {
-    private listAttend = [];
+    private listAttend: object[] = [];
     private listRole: string[] = ["bodyguard", "witch", "wolf", "wolf", "village", "village",
         "cursed", "hunter", "mayor", "wolf", "diviner", "village"];
     private listPlayer: any[] = [];
@@ -142,6 +142,7 @@ export class Init {
                     option.push({label: each.getName().username, value: each.getId()})
                 }
             })
+
             const row = await new ActionRowBuilder()
                 .addComponents(new StringSelectMenuBuilder()
                     .setCustomId('select')
@@ -158,7 +159,7 @@ export class Init {
             await this.bot.channel.send({content: 'Choose who will die'});
             const wolfList = this.listPlayer.filter(each => each.getRole() === 'wolf');
             wolfList.forEach(each => {
-                this.client.users.fetch(each.getId(), false).then(async (user:any) => await user.send("Hello"));
+                this.client.users.fetch(each.getId(), false).then(async (user: any) => await user.send("Hello"));
             })
             await this.sleepTime(10000);
 

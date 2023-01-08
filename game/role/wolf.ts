@@ -1,16 +1,18 @@
 import Player from "./player";
 
 class Wolf extends Player {
-    private targetKill: any;
-    constructor(name: any, id: any) {
-        super(name, id, 'wolf', false);
+    private targetKill: string;
+
+    constructor(user: object[], id: string) {
+        super(user, id, 'wolf', false);
+        this.targetKill = '';
     }
 
-    kill(id12Kill: any) {
+    kill(id12Kill: string) {
         this.targetKill = id12Kill;
     }
 
-    getTargetKill() {
+    getTargetKill(): string {
         return this.targetKill;
     }
 }

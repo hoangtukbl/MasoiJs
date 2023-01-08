@@ -1,53 +1,59 @@
 class Player {
-    private state: any;
-    private name: object[];
+    private state: boolean;
+    private user: object[];
     private id: string;
-    private legit: any;
-    private role: any;
-    constructor(name: object[], id: string, legit: any, role: any) {
+    private legit: boolean;
+    private role: string;
+
+    constructor(user: object[], id: string, role: string, legit: boolean) {
         this.state = true;
-        this.name = name;
+        this.user = user;
         this.id = id;
         this.legit = legit;
         this.role = role;
     }
 
-    getName():any {
-        return this.name;
-    }
-    setName(name: any) {
-        this.name = name;
+    getName(): any {
+        return this.user;
     }
 
-    getId(): any {
-        return this.id
+    setName(user: object[]) {
+        this.user = user;
     }
-    setID(id: any) {
+
+    getId(): string {
+        return this.id;
+    }
+
+    setID(id: string) {
         this.id = id;
     }
 
-    setState(state: any) {
+    setState(state: boolean) {
         this.state = state;
     }
-    getState(): boolean | any {
+
+    getState(): boolean {
         return this.state;
     }
 
-    getRole(): any {
+    getRole(): string {
         return this.role;
     }
-    setRole(role: any) {
+
+    setRole(role: string) {
         this.role = role;
     }
 
-    setLegit(legit: any) {
+    setLegit(legit: boolean) {
         this.legit = legit;
     }
-    getLegit(): any {
+
+    getLegit(): boolean {
         return this.legit;
     }
 
-    vote(id: any) {
+    vote(id: string) {
         if (this.state === true) {
             return id;
         }

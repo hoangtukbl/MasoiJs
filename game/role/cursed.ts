@@ -1,8 +1,8 @@
 import Player from "./player";
 
 class Cursed extends Player {
-    constructor(name: any, id: any) {
-        super(name, id, 'cursed', true);
+    constructor(user: object[], id: string) {
+        super(user, id, 'cursed', true);
     }
 
     convert() {

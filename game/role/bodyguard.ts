@@ -1,23 +1,23 @@
 import Player from "./player";
 
 class Bodyguard extends Player {
-    private idProtected: any;
+    private idProtected: string | null;
 
-    constructor(name: any, id: any) {
-        super(name, id, 'bodyguard', true);
+    constructor(user: object[], id: string) {
+        super(user, id, 'bodyguard', true);
+        this.idProtected = null;
     }
 
-    protect(idProtected: any) {
+    protect(idProtected: string): boolean {
         if (idProtected == this.idProtected) {
             return false;
-        }
-        else {
+        } else {
             this.setProtected(idProtected);
             return true;
         }
     }
 
-    setProtected(idProtected: any) {
+    setProtected(idProtected: string) {
         this.idProtected = idProtected;
     }
 }

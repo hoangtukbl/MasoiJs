@@ -1,7 +1,6 @@
 const {PermissionFlagsBits, Events} = require('discord.js');
 const moment = require('moment');
 const {GuildScheduledEventEntityType} = require("discord-api-types/v8");
-const Game = require("../../game/__init__");
 
 const command = {
     normalCom: (client) => {
@@ -98,9 +97,9 @@ const command = {
                     console.log(err);
                     msg.reply('Structure: $lich <name> <dateStart> <dateEnd(OPTIONAL)>');
                 }
-            } else if (commandName.split(' ')[0] == '$spam') {
+            } else if (commandName.split(' ')[0] === '$spam') {
                 for (let i = 0; i < parseInt(commandName.split(' ')[1]); ++i) {
-                    await setTimeout(() => msg.channel.send('$s'), 5000);
+                    setTimeout(() => msg.channel.send('$s'), 5000);
                 }
             } else if (commandName === '$rickroll') {
                 const im = "https://images4.fanpop.com/image/photos/22700000/Rick-Rolling-Win-rickrolld-22704848-250-217.gif";
@@ -125,8 +124,6 @@ const command = {
                         }
                     })
                     .catch(collected => {
-                        // console.dir(collected);
-                        console.log(collected)
                         console.log(`Game có ${collected.size} người chơi`);
                         msg.channel.send('You didn\'t react with neither a thumbs up, nor a thumbs down.');
                     });
