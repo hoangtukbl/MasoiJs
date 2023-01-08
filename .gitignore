@@ -1,4 +1,4 @@
 /node_modules
 /node_modules/*
 .env
-bot/config.json
+./bot/config.json
