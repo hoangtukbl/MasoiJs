@@ -2,9 +2,10 @@
   "name": "masoijs",
   "version": "1.0.0",
   "description": "",
-  "main": "game.js",
+  "main": "bot/bot.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon ."
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,15 @@
   },
   "homepage": "https://github.com/hoangtukbl/MasoiJs#readme",
   "dependencies": {
+    "@discordjs/rest": "^1.5.0",
+    "discord-api-types": "^0.37.26",
     "discord.js": "^14.7.1",
     "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
   }
 }
