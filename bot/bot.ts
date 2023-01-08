@@ -1,8 +1,8 @@
 import {wolfGameCmd} from "./command/wolfGameCmd";
-const { token } = require('./config.json');
 const normalCommand = require('./command/command');
 const bot = require('./config/config');
 const slashCommands = require('./command/slashCommand');
+require('dotenv').config()
 
 bot.once('ready', () => {
     console.log('Bot is Ready!');
@@ -14,4 +14,4 @@ bot.once('ready', () => {
 // slashCommands.slashCommand(bot);
 wolfGameCmd.wolfCmd(bot);
 
-bot.login(token).then((data:any) => console.log(data)).catch((err:any) => console.log(err));
+bot.login(process.env.TOKEN_DISCORD).then((data:any) => console.log("Connect")).catch((err:any) => console.log(err));
