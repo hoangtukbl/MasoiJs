@@ -2,10 +2,10 @@
   "name": "masoijs",
   "version": "1.0.0",
   "description": "",
-  "main": "bot/bot.ts",
+  "main": "./bot/bot.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon ."
+    "start": "nodemon ."
   },
   "repository": {
     "type": "git",

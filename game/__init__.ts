@@ -11,6 +11,7 @@ export class Init {
         "cursed", "hunter", "mayor", "wolf", "diviner", "village"];
     private listPlayer: any[] = [];
     private queueKill: any[] = [];
+    private queueKillCertain: any[] = [];
     private queueRev: any[] = [];
     bot: any;
     private protect: any;
@@ -30,6 +31,18 @@ export class Init {
         await this.bot.reply("Hello, tui gửi từ ma sói");
     }
 
+    setKillCertain(idPlayer: string){
+        this.queueKillCertain.push(idPlayer);
+    }
+
+    async setKillList(idPlayer: string){
+        await this.queueKill.push(idPlayer);
+    }
+
+    async setRevList(idPlayer: string){
+        await this.queueRev.push(idPlayer);
+    }
+
     getListPlayer() {
         return this.listPlayer;
     }
@@ -47,8 +60,8 @@ export class Init {
         this.queueRev.push(idPlayer);
     }
 
-    setProtected(protect: string) {
-        console.log("Convert");
+    async setProtected(protect: string) {
+        console.log("Protected");
         this.protect = protect;
     }
 
@@ -56,20 +69,31 @@ export class Init {
         return this.protect;
     }
 
-    handleKill() {
-        this.queueKill.forEach((j: any) => {
-            this.listPlayer.forEach((k: any) => {
-                if (j.getId() === k.getId()) {
-                    k.setState(false);
-                }
+    async handleKill() {
+        if(this.queueKill.length>0){
+            await this.queueKill.forEach((idPlayer: string) => {
+                this.listPlayer.forEach((player: any) => {
+                    if (idPlayer === player.getId() && idPlayer !== this.protect) {
+                        player.setState(false);
+                    }
+                })
             })
-        })
+        }
+        if(this.queueKillCertain.length>0){
+            await this.queueKillCertain.forEach((idPlayer: string) => {
+                this.listPlayer.forEach((player: any) => {
+                    if(idPlayer === player.getId()){
+                        player.setState(false);
+                    }
+                })
+            })
+        }
     }
 
-    handleRev() {
-        this.queueRev.forEach((j: any) => {
+    async handleRev() {
+        await this.queueRev.forEach((j: any) => {
             this.listPlayer.forEach((k: any) => {
-                if (j.getId() === k.getId()) {
+                if (j === k.getId()) {
                     k.setState(true);
                 }
             })
@@ -77,7 +101,7 @@ export class Init {
     }
 
     setRole = async () => {
-        this.listAttend.sort(() => Math.random() - 0.5);
+        await this.listAttend.sort( () => Math.random() - 0.5);
         for (let i = 0; i < this.listAttend.length; i++) {
             const each: any = this.listRole[i];
             const player: any = this.listAttend[i];
@@ -125,6 +149,11 @@ export class Init {
         return quan;
     }
 
+    async clear(){
+        this.queueRev = [];
+        this.queueKill = [];
+    }
+
     checkFinish() {
         return this.countEvil() >= this.countGood();
     }
@@ -133,25 +162,30 @@ export class Init {
         return new Promise(resolve => setTimeout(resolve, second));
     }
 
+    initSelectOption = async (agent: string) => {
+        const option: any[] = [];
+        await this.listPlayer.forEach(each => {
+            if (each.getState()) {
+                option.push({label: each.getName().username, value: each.getId()})
+            }
+        })
+
+        const row = await new ActionRowBuilder()
+            .addComponents(new StringSelectMenuBuilder()
+                .setCustomId(`select-by-${agent}`)
+                .setPlaceholder('Choose Someone...')
+                .addOptions(
+                    option
+                ),
+            );
+        return row;
+    }
+
     async start() {
         while (true) {
             const players = this.listPlayer;
-            const option: any[] = [];
-            await this.listPlayer.forEach(each => {
-                if (each.getState()) {
-                    option.push({label: each.getName().username, value: each.getId()})
-                }
-            })
-
-            const row = await new ActionRowBuilder()
-                .addComponents(new StringSelectMenuBuilder()
-                    .setCustomId('select')
-                    .setPlaceholder('Choose Someone...')
-                    .addOptions(
-                        option
-                    ),
-                );
-            await this.bot.channel.send({content: 'Bạn muốn chọn ai để bảo vệ đêm nay: ', components: [row]});
+            const listProtected = await this.initSelectOption('guard');
+            await this.bot.channel.send({content: 'Bạn muốn chọn ai để bảo vệ đêm nay: ', components: [listProtected]});
             await this.sleepTime(10000);
             const playerProtect = await this.getProtected();
             players[0].protect(playerProtect);
@@ -166,8 +200,12 @@ export class Init {
             const buttonWitch = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                        .setCustomId('primary')
+                        .setCustomId('kill-by-witch')
                         .setLabel('Kill')
+                        .setStyle(ButtonStyle.Danger),
+                    new ButtonBuilder()
+                        .setCustomId('revival-by-witch')
+                        .setLabel('Save')
                         .setStyle(ButtonStyle.Primary)
                 );
             await this.bot.channel.send({
@@ -175,13 +213,19 @@ export class Init {
                 components: [buttonWitch]
             });
             await this.sleepTime(10000);
+            await this.handleKill();
+            await this.handleRev();
+            await this.getListPlayerss();
+            await this.clear();
         }
     }
 
     getListPlayerss = async () => {
         let a = '';
-        this.listPlayer.forEach(each => {
-            a += each.getName().username + ", role =" + each.getRole() + "\n";
+        await this.listPlayer.forEach(each => {
+            if(each.getState()){
+                a += each.getName().username + ", role =" + each.getRole() + "\n";
+            }
         })
         this.bot.channel.send(a);
     }
