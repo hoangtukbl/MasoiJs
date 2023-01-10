@@ -1,4 +1,4 @@
-import {Events} from "discord.js";
+import {ActionRowBuilder, Events, StringSelectMenuBuilder} from "discord.js";
 import {Init} from "../../game/__init__"
 
 let game:any;
@@ -16,12 +16,27 @@ export const wolfGameCmd = {
         client.on(Events.InteractionCreate, async (interaction: any) => {
             if (!interaction.isStringSelectMenu()) return;
             const selected = interaction.values[0];
-            await game.setProtected(selected);
-            await interaction.channel.send(selected);
+            if(interaction.customId === 'select-by-wolf') {
+                await interaction.channel.send(`Người chơi bị vote bởi sói là: ${selected}`);
+                await game.setKillList(selected);
+            }
+            else if(interaction.customId === 'select-by-witch'){
+                await interaction.channel.send(`Người chơi bị vote bởi phù thuỷ là: ${selected}`);
+                await game.setKillList(selected);
+            }
+            else if(interaction.customId === 'select-by-guard'){
+                await game.setProtected(selected);
+            }
         });
         client.on(Events.InteractionCreate, async (interaction: any) => {
             if (!interaction.isButton()) return;
-            console.log(interaction.customId);
+            const listChooseKillByWitch = await game?.initSelectOption('witch');
+            if(interaction.customId==='kill-by-witch'){
+                interaction.reply({content: 'Chọn người bạn muôn đầu độc để giết đêm nay: ', components: [listChooseKillByWitch]});
+            }
+            else if(interaction.customId === 'revival-by-witch'){
+                game?.setRevList()
+            }
         });
     }
 }
@@ -46,7 +61,7 @@ const startGame = async (interaction: any, client: any) => {
                     if (!user.bot) {
                         players.push({name: user, id: '869927501634359357'});
                         players.push({name: user, id: '685822823000047669'});
-                        players.push({name: user, id: user.id});
+                        players.push({name: user, id: '721564631642144861'});
                         players.push({name: user, id: '688796295871201418'});
                         players.push({name: user, id: '710885118444830740'});
                         players.push({name: user, id: '756049190513279027'});
