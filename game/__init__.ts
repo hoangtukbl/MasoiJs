@@ -11,6 +11,7 @@ export class Init {
         "cursed", "hunter", "mayor", "wolf", "diviner", "village"];
     private listPlayer: any[] = [];
     private queueKill: any[] = [];
+    private queueKillCertain: any[] = [];
     private queueRev: any[] = [];
     bot: any;
     private protect: any;
@@ -28,6 +29,10 @@ export class Init {
 
     command = async () => {
         await this.bot.reply("Hello, tui gửi từ ma sói");
+    }
+
+    setKillCertain(idPlayer: string){
+        this.queueKillCertain.push(idPlayer);
     }
 
     async setKillList(idPlayer: string){
@@ -66,20 +71,29 @@ export class Init {
 
     async handleKill() {
         if(this.queueKill.length>0){
-            await this.queueKill.forEach((j: any) => {
-                this.listPlayer.forEach((k: any) => {
-                    if (j === k.getId()) {
-                        k.setState(false);
+            await this.queueKill.forEach((idPlayer: string) => {
+                this.listPlayer.forEach((player: any) => {
+                    if (idPlayer === player.getId() && idPlayer !== this.protect) {
+                        player.setState(false);
+                    }
+                })
+            })
+        }
+        if(this.queueKillCertain.length>0){
+            await this.queueKillCertain.forEach((idPlayer: string) => {
+                this.listPlayer.forEach((player: any) => {
+                    if(idPlayer === player.getId()){
+                        player.setState(false);
                     }
                 })
             })
         }
     }
 
-    handleRev() {
-        this.queueRev.forEach((j: any) => {
+    async handleRev() {
+        await this.queueRev.forEach((j: any) => {
             this.listPlayer.forEach((k: any) => {
-                if (j.getId() === k.getId()) {
+                if (j === k.getId()) {
                     k.setState(true);
                 }
             })
@@ -87,7 +101,7 @@ export class Init {
     }
 
     setRole = async () => {
-        this.listAttend.sort(() => Math.random() - 0.5);
+        await this.listAttend.sort( () => Math.random() - 0.5);
         for (let i = 0; i < this.listAttend.length; i++) {
             const each: any = this.listRole[i];
             const player: any = this.listAttend[i];
@@ -135,7 +149,7 @@ export class Init {
         return quan;
     }
 
-    clear(){
+    async clear(){
         this.queueRev = [];
         this.queueKill = [];
     }
@@ -200,7 +214,9 @@ export class Init {
             });
             await this.sleepTime(10000);
             await this.handleKill();
+            await this.handleRev();
             await this.getListPlayerss();
+            await this.clear();
         }
     }
 

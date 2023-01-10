@@ -22,7 +22,7 @@ export const wolfGameCmd = {
             }
             else if(interaction.customId === 'select-by-witch'){
                 await interaction.channel.send(`Người chơi bị vote bởi phù thuỷ là: ${selected}`);
-                await game.setKillList(selected);
+                await game.setKillCertain(selected);
             }
             else if(interaction.customId === 'select-by-guard'){
                 await game.setProtected(selected);
